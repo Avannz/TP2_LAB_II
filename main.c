@@ -2,11 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
-      char nombre[30];
-      char genero;
-      int edad;
-}persona;
+typedef struct
+{
+    char nombre[30];
+    char genero;
+    int edad;
+} persona;
+
+typedef struct{ 
+     int valores[100]; 
+     int posTope; //posición de nuevo tope, lugar en donde se almacenará el nuevo valor 
+} Pila;
 
 persona cargarPersona();
 persona* crearArreglo(int validos);
@@ -14,8 +20,11 @@ int cargarArreglo(persona arreglo[], int dim);
 void cargarArregloGenero (persona arr[], persona arr2[], int validos, char genero);
 int cantidadGenero(persona arreglo[], int validos, char genero);
 void mostrarArreglo (persona arreglo[], int validos);
+void ordenarArreglo(persona arreglo[], int validos);
+int posicionMenor (persona arreglo[], int posIni, int validos);
 
-int main(){
+int main()
+{
 
     persona arreglo[30];
     char genero;
@@ -23,7 +32,7 @@ int main(){
 
     int validos = cargarArreglo(arreglo, 30);
 
-    printf("Ingresa el genero: ");
+    printf("\nIngresa el genero a filtrar: ");
     fflush(stdin);
     scanf("%c", &genero);
 
@@ -31,17 +40,30 @@ int main(){
 
     printf("La cantidad de ese genero es: %d", cantGenero);
 
-    persona* arregloGenero = crearArreglo(cantGenero);
+    persona* arregloGenero = crearArreglo(
+                                          );
 
-    cargarArregloGenero(arreglo, arregloGenero, cantGenero, genero);
+    printf ("\n----------ARREGLO FILTRADO----------");
+    cargarArregloGenero(arreglo, arregloGenero, validos, genero);
     mostrarArreglo(arregloGenero, cantGenero);
+
+    
+    //PUNTO 2
+    printf ("\n----------ARREGLO ORDENADO----------\n");
+    ordenarArreglo(arreglo, validos);
+    mostrarArreglo(arreglo, validos);
+    
+    
+
+
 
 
 
 
 }
 
-persona cargarPersona(){
+persona cargarPersona()
+{
 
     persona aux;
 
@@ -53,7 +75,7 @@ persona cargarPersona(){
     fflush(stdin);
     scanf("%d", &aux.edad);
     printf("\n");
-    printf("Ingresa el g�nero (M o F): ");
+    printf("Ingresa el g�nero (M o F): ");
     fflush(stdin);
     scanf("%c", &aux.genero);
 
@@ -66,7 +88,8 @@ int cargarArreglo(persona arreglo[], int dim)
     int i = 0;
     char letra = 's';
 
-    while(i < dim && letra == 's'){
+    while(i < dim && letra == 's')
+    {
         arreglo[i] = cargarPersona();
         printf("\nIngresa 's' para continuar: ");
         fflush(stdin);
@@ -83,14 +106,16 @@ int cantidadGenero(persona arreglo[], int validos, char genero)
     int i = 0;
     int cant = 0;
 
-    while(i < validos){
+    while(i < validos)
+    {
 
-        if(genero == arreglo[i].genero){
-            cant = cant + 1;
-
+        if(genero == arreglo[i].genero)
+        {
+            cant++;
             i++;
-        }else{
-
+        }
+        else
+        {
             i++;
         }
     }
@@ -111,13 +136,14 @@ void cargarArregloGenero (persona arr[], persona arr2[], int validos, char gener
 {
 
     int i = 0;
+    int cant = 0;
 
-    for(i = 0; i < validos; i++){
-
-        if(arr[i].genero == genero){
-
-            arr2[i] = arr[i];
-
+    for(i = 0; i < validos; i++)
+    {
+        if(arr[i].genero == genero)
+        {
+            arr2[cant] = arr[i];
+            cant++;
         }
     }
 }
@@ -125,7 +151,8 @@ void cargarArregloGenero (persona arr[], persona arr2[], int validos, char gener
 void mostrarArreglo (persona arreglo[], int validos)
 {
 
-    for(int i = 0; i < validos; i++){
+    for(int i = 0; i < validos; i++)
+    {
 
         printf("\n\n=================\n");
         printf("Nombre: %s\n", arreglo[i].nombre);
@@ -134,4 +161,39 @@ void mostrarArreglo (persona arreglo[], int validos)
         printf("=================\n");
 
     }
+}
+
+void ordenarArreglo(persona arreglo[], int validos)
+{
+    int posmenor;
+    persona aux;
+    int i = 0;
+    while(i < validos-1)
+    {
+        posmenor = posicionMenor(arreglo, i, validos);
+        aux = arreglo[posmenor];
+        arreglo[posmenor] = arreglo[i];
+        arreglo[i] = aux;
+        i++;
+    }
+}
+
+int posicionMenor (persona arreglo[], int posIni, int validos)
+{
+
+    persona menor = arreglo[posIni];
+    int posMenor = posIni;
+    int i = posIni+1;
+
+    while(i < validos)
+    {
+        if(menor.edad > arreglo[i].edad)
+        {
+            menor.edad = arreglo[i].edad;
+            posMenor = i;
+
+        }
+        i++;
+    }
+    return posMenor;
 }
