@@ -35,6 +35,14 @@ int main()
 
     persona arreglo[30];
     char genero;
+    int eleccion;
+
+     printf("Ingrese el ejercicio: ");
+    fflush(stdin);
+    scanf("%i",&eleccion);
+    switch(eleccion)
+    {
+    case 1:
 
 
     int validos = cargarArreglo(arreglo, 30);
@@ -53,20 +61,36 @@ int main()
     printf ("\n----------ARREGLO FILTRADO----------");
     cargarArregloGenero(arreglo, arregloGenero, validos, genero);
     mostrarArreglo(arregloGenero, cantGenero);
-
-    
+    break;
+        
+case 2:
     //PUNTO 2
     printf ("\n----------ARREGLO ORDENADO----------\n");
     ordenarArreglo(arreglo, validos);
     mostrarArreglo(arreglo, validos);
-    
-    
+    break;
+        
+case 3:
+
+        inicPila(&p);
+        inicPila(&p2);
+        apilar(&p, 5);
+        mostrar(&p);
+        leer(&p);
+        mostrar(&p);
+        desapilar(&p);
+        mostrar(&p);
+
+        while(!pilavacia(&p)){
+            apilar(&p2, desapilar(&p));
+        }
+
+        mostrar(&p2);
+        mostrar(&p);
 
 
-
-
-
-
+        break;
+    }
 }
 
 persona cargarPersona()
