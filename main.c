@@ -23,6 +23,13 @@ void mostrarArreglo (persona arreglo[], int validos);
 void ordenarArreglo(persona arreglo[], int validos);
 int posicionMenor (persona arreglo[], int posIni, int validos);
 
+void apilar(Pila * p, int valor);
+int desapilar(Pila * p);
+int tope(Pila * p);
+void mostrar(Pila * p);
+void leer (Pila * p);
+int pilavacia(Pila* p);
+
 int main()
 {
 
@@ -197,3 +204,81 @@ int posicionMenor (persona arreglo[], int posIni, int validos)
     }
     return posMenor;
 }
+
+void inicPila(Pila * p){
+
+    p->posTope = 0;
+
+}
+
+void apilar(Pila * p, int valor){
+
+    if(p->posTope < 100){
+
+    p->valores[p->posTope] = valor;
+    (p->posTope)++;
+
+    }else{
+
+        printf("\nPILA LLENA");
+
+    }
+
+}
+
+int desapilar(Pila * p){
+    int valor = p->valores[p->posTope-1];
+    p->posTope--;
+
+    return valor;
+}
+
+int tope(Pila * p){
+
+    int i = p->valores[p->posTope-1];
+    return i;
+}
+
+void mostrar(Pila * p)
+{
+
+    int validos = p->posTope;
+    int i = 0;
+
+        printf("...................................................\n");
+
+    for(i = 0; i < validos; i++){
+
+        printf(" %d", p->valores[i]);
+
+    }
+
+        printf("\n...................................................");
+}
+
+void leer (Pila * p){
+
+    int i = 0;
+    int num;
+
+    printf("\n * Ingresa un valor: ");
+    fflush(stdin);
+    scanf("%i", &num);
+
+    p->valores[p->posTope] = num;
+
+    p->posTope++;
+
+}
+
+int pilavacia(Pila* p){
+    if(p->posTope == 0){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+
+
