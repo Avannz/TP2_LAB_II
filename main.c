@@ -15,6 +15,8 @@ typedef struct
     int posTope; //posición de nuevo tope, lugar en donde se almacenará el nuevo valor
 } Pila;
 
+const int dim = 10;
+
 persona cargarPersona();
 persona* crearArreglo(int validos);
 int cargarArreglo(persona arreglo[], int dim);
@@ -22,7 +24,11 @@ void cargarArregloGenero (persona arr[], persona arr2[], int validos, char gener
 int cantidadGenero(persona arreglo[], int validos, char genero);
 void mostrarArreglo (persona arreglo[], int validos);
 void ordenarArreglo(persona arreglo[], int validos);
+void mostrarArregloEnteros (int arreglo[], int validos);
+void insercion (int arreglo[], int validos);
 int posicionMenor (persona arreglo[], int posIni, int validos);
+void insertarDato(int arreglo[], int inicioBusqueda, int dato);
+int eliminarDato(int arreglo[], int validos, int pos, int f, int r);
 
 void apilar(Pila * p, int valor);
 int desapilar(Pila * p);
@@ -38,10 +44,13 @@ int main()
 {
 
     persona arreglo[30];
+    int enteros[5];
     char genero;
     int eleccion;
     int validos;
     int dato;
+    int pos;
+    int var = 0;
 
     Pila p, p2;
 
@@ -52,7 +61,7 @@ int main()
     {
     case 1:
 
-
+        printf("*** Ejercicio 1***\n");
         validos = cargarArreglo(arreglo, 30);
 
         printf("\nIngresa el genero a filtrar: ");
@@ -72,7 +81,7 @@ int main()
         break;
 
     case 2:
-        //PUNTO 2
+        printf("*** Ejercicio 2***\n");
         printf ("\n----------ARREGLO ORDENADO----------\n");
         ordenarArreglo(arreglo, validos);
         mostrarArreglo(arreglo, validos);
@@ -81,7 +90,7 @@ int main()
     case 3:
 
         //PRUEBA DE FUNCIONES//
-
+        printf("*** Ejercicio 3***\n");
         inicPila(&p);
         inicPila(&p2);
         apilar(&p, 5);
@@ -109,6 +118,7 @@ int main()
 
     case 4:
 
+        printf("*** Ejercicio 4***\n");
         cargarPila(&p);
         cargarPila(&p2);
 
@@ -118,13 +128,27 @@ int main()
 
     case 5:
 
-        printf("Ingresa el valor a insertar en el arreglo: ");
-        fflush(stdin);
-        scanf("%i", &dato);
-        
+        printf("*** Ejercicio 5 y 6 ***\n");
+
         validos = cargarArregloEnteros(arreglo, dim, dato);
-        
-        
+
+        insercion(arreglo, validos);
+        mostrarArregloEnteros(arreglo, validos);
+
+        break;
+
+    case 7:
+
+        validos = cargarArregloEnteros(enteros, 5);
+        mostrarArregloEnteros(enteros, validos);
+        printf("Que pos quieres eliminar?:  ");
+        fflush(stdin);
+        scanf("%d", &pos);
+
+        var = eliminarDato(enteros, validos, pos, 0, 0);
+        mostrarArregloEnteros(enteros, var);
+        printf("\nRES = %d\n", var);
+
 
     }
 }
@@ -181,7 +205,7 @@ int cargarArregloEnteros(int arreglo[], int dim)
         fflush(stdin);
         scanf("%i", &dato);
 
-        arreglo[i] = dato
+        arreglo[i] = dato;
 
 
                      printf("\nIngresa 's' para continuar: ");
@@ -253,6 +277,16 @@ void mostrarArreglo (persona arreglo[], int validos)
         printf("Genero: %c\n", arreglo[i].genero);
         printf("Edad: %d\n", arreglo[i].edad);
         printf("=================\n");
+
+    }
+}
+void mostrarArregloEnteros (int arreglo[], int validos)
+{
+
+    for(int i = 0; i < validos; i++)
+    {
+
+        printf("| %d |", arreglo[i]);
 
     }
 }
@@ -401,7 +435,7 @@ void cargarPila (Pila *pila1)
 
 }
 
-void intercalarPilas (Pila *pila1, Pila *pila2)
+Pila intercalarPilas (Pila *pila1, Pila *pila2)
 {
 
     Pila aux;
@@ -423,25 +457,77 @@ void intercalarPilas (Pila *pila1, Pila *pila2)
 
 }
 
-void insertarDato(int arreglo[], int validos, int dato)
+void insercion (int arreglo[], int validos)
 {
 
-    int i;
-    int menor = arreglo[i];
-    
-    for(i = 0; i < validos; i++)
-    {
-        
-        if(menor < dato){
-            
-            
-            
-            
-        }
-        
-     
+    int indiceActual = 0;
+    while(indiceActual < validos-1){
+
+        insertarDato(arreglo, indiceActual, arreglo[indiceActual+1]);
+        indiceActual++;
+
     }
-    
+}
+
+void insertarDato(int arreglo[], int inicioBusqueda, int dato)
+{
+    int i = inicioBusqueda;
+    while(i >= 0 && dato < arreglo[i]){
+
+        arreglo[i+1] = arreglo[i];
+        i--;
+
+    }
+    arreglo[i+1] = dato;
+}
+
+/*int eliminarArreglo(int arreglo[], int validos, int pos, int i){
+    int aux = 0;
+    if(pos <= arreglo[i]){
+        eliminarArreglo(arreglo, validos, pos, i+1);
+    }
+    else if(pos < validos){
+        arreglo[i-1] = arreglo[i];
+        i++;
+    }
+}*/
+
+/**void eliminarDato(int arreglo[], int validos, int pos){
+
+    int i = 0;
+
+    while(i < validos-1){
+
+        if(pos == i){
+
+            while(i < validos){
+
+                arreglo[i] = arreglo[i+1];
+                i++;
+            }
+        }
+        i++;
+    }
+    validos--;
+    mostrarArregloEnteros(arreglo, validos);
+}**/
+
+
+int eliminarDato(int arreglo[], int validos, int pos, int f, int r){
+
+    r = 0;
+    f = 0;
+    int var = 0;
+    if(validos == pos+1){
+        f = 1;
+    }
+    else{
+        eliminarDato(arreglo, validos-1, pos, f, r+1);
+    }
+    arreglo[validos-1] = arreglo[validos];
+    var = validos + r;
+    return var-1;
+}
 
 
 
